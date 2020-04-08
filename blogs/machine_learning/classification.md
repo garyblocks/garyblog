@@ -41,3 +41,26 @@
 * notes:
 	* Model with high variance pays a lot of attention to training data and does not generalize on the data which it hasn’t seen before. Such models perform very well on training data but has high error rates on test data.
 	* A value which tells us the spread of our data
+
+#### Tradeoff
+\\[
+    Y = f(X) + e
+\\]
+\\[
+    Err(x) = E[(Y - \hat{f}(x))^2]
+    = (E[\hat{f}(x)]-f(x)])^2 + E[(\hat{f}(x) - E[\hat{f}(x)])^2] +  \sigma^2_e,
+\\]
+\\[
+    Err(x) = Bias^2 + Variance + Irreducible Error
+\\]
+
+* underfitting:
+	* happens when a model unable to capture the underlying pattern of the data.
+	* These models usually have high bias and low variance.
+	* It happens when we have very less amount of data to build an accurate model or when we try to build a linear model with a nonlinear data. 
+* overfitting 
+	* happens when our model captures the noise along with the underlying pattern in data.
+	* These models have low bias and high variance. 
+	* It happens when we train our model a lot over noisy dataset.
+
+	
