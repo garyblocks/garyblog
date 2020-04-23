@@ -10,26 +10,23 @@ The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 ```
 **Code:**
 
-```
+```python
 class Solution:
-    # @return an integer
-    def threeSumClosest(self, num, target):
-        num.sort()
-        result = num[0] + num[1] + num[2]
-        for i in range(len(num) - 2):
-            j, k = i+1, len(num) - 1
-            while j < k:
-                sum = num[i] + num[j] + num[k]
-                if sum == target:
-                    return sum
-                
-                if abs(sum - target) < abs(result - target):
-                    result = sum
-                
-                if sum < target:
-                    j += 1
-                elif sum > target:
-                    k -= 1
-            
-        return result
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        delta = float('inf')
+        nums = sorted(nums)
+        for i, n in enumerate(nums[:-2]):
+            l, h = i+1, len(nums) - 1
+            while l < h:
+                s = nums[l] + nums[h] + n
+                if s == target:
+                    return s
+                if abs(s - target) < abs(delta):
+                    delta = s - target
+                if s < target:
+                    l += 1
+                else:
+                    h -= 1
+        return target + delta
 ```
+The idea is the same as 3Sum, sort the array first, then fix one number and search for the other two. Keep a delta to record the minimal difference from the target.

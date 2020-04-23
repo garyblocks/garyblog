@@ -16,34 +16,29 @@ Although the above answer is in lexicographical order, your answer could be in a
 
 **Code:**
 
-```
+```python
 class Solution:
-    def letterCombinations(self, digits):
-        phone = {'2': ['a', 'b', 'c'],
-                 '3': ['d', 'e', 'f'],
-                 '4': ['g', 'h', 'i'],
-                 '5': ['j', 'k', 'l'],
-                 '6': ['m', 'n', 'o'],
-                 '7': ['p', 'q', 'r', 's'],
-                 '8': ['t', 'u', 'v'],
-                 '9': ['w', 'x', 'y', 'z']}
-                
-        def backtrack(combination, next_digits):
-            # if there is no more digits to check
-            if len(next_digits) == 0:
-                # the combination is done
-                output.append(combination)
-            # if there are still digits to check
-            else:
-                # iterate over all letters which map 
-                # the next available digit
-                for letter in phone[next_digits[0]]:
-                    # append the current letter to the combination
-                    # and proceed to the next digits
-                    backtrack(combination + letter, next_digits[1:])
-                    
-        output = []
-        if digits:
-            backtrack("", digits)
-        return output
+    def letterCombinations(self, digits: str) -> List[str]:
+        map_ = {
+            "2": 'abc',
+            "3": 'def',
+            "4": 'ghi',
+            "5": 'jkl',
+            "6": 'mno',
+            "7": 'pqrs',
+            "8": 'tuv',
+            "9": 'wxyz'
+        }
+        ret = []
+        def dfs(path, digits):
+            if not digits:
+                return ret.append(path)
+            for d in map_[digits[0]]:
+                dfs(path + d, digits[1:])
+        if digits:  # make sure empty list is returned
+            dfs("", digits)
+        return ret
 ```
+We are doing a DFS search to generate all the possible combinations one by one. The corner case here is to check if there's no digit to begin with, we should return empty list. DFS is better here because it saves a lot of initialization or checking working in BFS.
+
+Time and space complexity are both \\(3^N \times 4^M\\), N is the number of digits that map to three letters and M is number of digits that map to four letters.

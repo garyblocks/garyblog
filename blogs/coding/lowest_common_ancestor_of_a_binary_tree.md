@@ -26,46 +26,48 @@ Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant of 
 
 **Code:**
 
-```
+```python
 class Solution:
-
-    BOTH_PENDING = 2
-    LEFT_DONE = 1
-    BOTH_DONE = 0
-
-    def lowestCommonAncestor(self, root, p, q):
-        stack = [(root, Solution.BOTH_PENDING)]
-
-        # This flag is set when either one of p or q is found.
-        one_node_found = False
-
-        # This is used to keep track of LCA index.
-        LCA_index = -1
-
-        while stack:
-            parent_node, parent_state = stack[-1]
-            if parent_state != Solution.BOTH_DONE:
-                if parent_state == Solution.BOTH_PENDING:
-                    if parent_node == p or parent_node == q:
-                        if one_node_found:
-                            return stack[LCA_index][0]
-                        else:
-                            one_node_found = True
-                            LCA_index = len(stack) - 1
-
-                    child_node = parent_node.left
-                else:
-                    child_node = parent_node.right
-
-                stack.pop()
-                stack.append((parent_node, parent_state - 1))
-                if child_node:
-                    stack.append((child_node, Solution.BOTH_PENDING))
-            else:
-
-                if one_node_found and LCA_index == len(stack) - 1:
-                    LCA_index -= 1
-                stack.pop()
-
-        return None
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        self.ret = None
+        def help(node):
+            if not node:
+                return False
+            left = help(node.left)
+            right = help(node.right)
+            mid = True if node is p or node is q else False
+            if left + right + mid >= 2:
+                self.ret = node
+            return left or right or mid
+        
+        help(root)
+        return self.ret
 ```
+Recursively, we can check if each branch have p or q. The moment we have them on two branches, we got the LCA.
+
+```python
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        stack = [root]
+        parents = {root: None}
+        # find all parents for all nodes
+        while p not in parents or q not in parents:
+            node = stack.pop()
+            if node.left:
+                stack.append(node.left)
+                parents[node.left] = node
+            if node.right:
+                stack.append(node.right)
+                parents[node.right] = node
+        # get all the parents for p
+        pset = set()
+        while p:
+            pset.add(p)
+            p = parents[p]
+        # check q
+        while q:
+            if q in pset:
+                return q
+            q = parents[q]
+```
+Iterative solution, first, get all the parents before p and q, then find the path to p, if a point in q crosses the p path, it's the LCA.

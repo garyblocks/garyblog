@@ -66,25 +66,30 @@ Given a roman numeral, convert it to an integer. Input is guaranteed to be withi
 
 **Code:**
 
-```
-values = {
-    "I": 1,
-    "V": 5,
-    "X": 10,
-    "L": 50,
-    "C": 100,
-    "D": 500,
-    "M": 1000,
-}
-
+```python
 class Solution:
-    def romanToInt(self, s: str) -> int:
-        total = values.get(s[-1])
-        for i in reversed(range(len(s) - 1)):
-            if values[s[i]] < values[s[i + 1]]:
-                total -= values[s[i]]
-            else:
-                total += values[s[i]]
-        return total
+    def intToRoman(self, num: int) -> str:
+        i2r_map = [
+            (1000, 'M'),
+            (900, 'CM'),
+            (500, 'D'),
+            (400, 'CD'),
+            (100, 'C'),
+            (90, 'XC'),
+            (50, 'L'),
+            (40, 'XL'),
+            (10, 'X'),
+            (9, 'IX'),
+            (5, 'V'),
+            (4, 'IV'),
+            (1, 'I')
+        ]
+        
+        ret = ''
+        for n, roman in i2r_map:
+            count, num = divmod(num, n)
+            if count:
+                ret += roman * count
+        return ret
 ```
-
+Create a list of integer and roman number pairs as a map, loop through it. At each step, append the roman letter with count and keep the remaining. Since the map is ordered from the biggest to the smallest, the number will always get smaller.

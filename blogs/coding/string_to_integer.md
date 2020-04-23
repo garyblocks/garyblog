@@ -45,17 +45,39 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
 ```
 **Code:**
 
-```
-class Solution(object):
-    def myAtoi(self, s):
-        if len(s) == 0 : return 0
-        ls = list(s.strip())
+```python
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        MAX_INT = 2147483647
+        # remove white space
+        str = str.strip()  # need to keep the space in the middle
+        if len(str) == 0: return 0
         
-        sign = -1 if ls[0] == '-' else 1
-        if ls[0] in ['-','+'] : del ls[0]
-        ret, i = 0, 0
-        while i < len(ls) and ls[i].isdigit() :
-            ret = ret*10 + ord(ls[i]) - ord('0')
+        # check sign
+        i = 0
+        sign = 1
+        if str[i] in '+-':
+            if str[i] == '-':
+                sign = -1
             i += 1
-        return max(-2**31, min(sign * ret,2**31-1))
+            
+        # get the numerical part
+        n = 0
+        while i < len(str):
+            if str[i].isdigit():
+                n = n * 10 + ord(str[i]) - 48
+            else:
+                break  # handle trailing characters
+            i += 1
+        
+        # check max int
+        if sign < 0 and n >= MAX_INT + 1:
+            return - MAX_INT - 1
+        elif n > MAX_INT:
+            return MAX_INT
+        
+        return sign * n
 ```
+Just go through the string character by character, but a lot of corner cases need to mind. When you split the logic into units, it's easier to manage.
+
+A trick here is that check length is faster than if not.

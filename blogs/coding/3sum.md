@@ -18,32 +18,34 @@ A solution set is:
 ```
 **Code:**
 
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        ret = []
+        N = len(nums)
+        if N < 3:
+            return ret
+        nums = sorted(nums)
+        for i, n in enumerate(nums[:-2]):
+            if n > 0:
+                break
+            if i > 0 and n == nums[i-1]:
+                continue
+            l, h = i+1, N - 1
+            while l < h:
+                if n + nums[l] + nums[h] < 0:
+                    l += 1
+                elif n + nums[l] + nums[h] > 0:
+                    h -= 1
+                else:
+                    ret.append([n, nums[l], nums[h]])
+                    while l < h and nums[l] == nums[l+1]: l += 1
+                    while l > h and nums[h] == nums[h-1]: h -= 1
+                    l += 1
+                    h -= 1
+        return ret
 ```
-class Solution(object):
-	def threeSum(self, nums):
-		res = []
-		nums.sort()
-		length = len(nums)
-		for i in xrange(length-2):
-			if nums[i]>0: break
-			if i>0 and nums[i]==nums[i-1]: continue
+First we sort the list then do a for loop for the first number. Then we are down to find the sum for two numbers that equals minus first number. 
 
-			l, r = i+1, length-1
-			while l<r:
-				total = nums[i]+nums[l]+nums[r]
-
-				if total<0:
-					l+=1
-				elif total>0:
-					r-=1
-				else: #[5]
-					res.append([nums[i], nums[l], nums[r]])
-					while l<r and nums[l]==nums[l+1]: #[6]
-						l+=1
-					while l<r and nums[r]==nums[r-1]: #[6]
-						r-=1
-					l+=1
-					r-=1
-		return res
-```
+To find all the combinations, we can have two pointers, moving towards each other, if the sum is larger than we need, we can reduce the right pointer, so we have a smaller number and vice versa. In the meantime, we are skipping all the numbers we have seen, so we don't have duplicates in the return list.
 
