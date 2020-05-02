@@ -40,19 +40,24 @@ The idea is just to convert int to string and reverse it then convert back. Two 
 ```python
 class Solution:
     def reverse(self, x: int) -> int:
-        rev_int = 0
-        max_, min_ = (2**31 - 1) // 10, 2**31 // 10
+        ret = 0  # if x is zero, it will pass the loop
+        max_int = 2**31 // 10  # we need to check maximum before one step before
+        # take out sign to let divmod run correctly
         sign = 1 if x >= 0 else -1
         x = abs(x)
         while x:
-            d = x % 10
-            if sign == 1 and (rev_int > max_ or (rev_int == max_ and d > 7)):
+            # pop digit from x
+            x, r = divmod(x, 10)
+            # check for overflow
+            if ret > max_int:
                 return 0
-            elif sign == -1 and (rev_int > min_ or (rev_int == min_ and d > 8)):
-                return 0
-            x = x // 10
-            rev_int  = rev_int * 10 + d
-        return sign * rev_int
+            elif ret == max_int:
+                # last digit of max int is 7 and min int is 8
+                if (sign > 0 and r > 7) or (sign < 0 and r > 8):
+                    return 0
+            # push digit to ret
+            ret = ret * 10 + r
+        return sign * ret  # remember to put the sign back
 ```
 Loop through the numbers using mode. Several things to be careful:
 1. In python mod behave differently when the number is negative.

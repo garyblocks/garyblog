@@ -51,3 +51,7 @@ class LRUCache:
         self.values[key] = value
 ```
 We need a dictionary to quick access and remove the data and we also need a list to remember the order. The list has to be a double linked list so we can do remove in O(1) time. In python OrderedDict is a combination of both, we can just use it to solve the problem.
+
+```python
+```
+Another way to do it is to implement our own double linked list.

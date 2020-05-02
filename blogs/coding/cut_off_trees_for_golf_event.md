@@ -53,19 +53,41 @@ Explanation: You started from the point (0,0) and you can cut off the tree in (0
 
 **Code:**
 
+```python
+from collections import deque
+class Solution:
+    def cutOffTree(self, forest: List[List[int]]) -> int:
+        M, N = len(forest), len(forest[0])
+        trees = []
+        for i in range(M):
+            for j in range(N):
+                if forest[i][j] > 1:
+                    trees.append((forest[i][j], i, j))
+        trees.sort()
+        cnt = 0
+        curr_i, curr_j = 0, 0
+        
+        def dist(ci, cj, ni, nj):
+            queue = deque([(ci, cj, 0)])
+            seen = {(ci, cj)}
+            while queue:
+                i, j, d = queue.pop()
+                if (i, j) == (ni, nj):
+                    return d
+                for dx, dy in [[0, 1], [1, 0], [-1, 0], [0, -1]]:
+                    x, y = i + dx, j + dy
+                    if 0 <= x < M and 0 <= y < N and forest[x][y] > 0 and (x, y) not in seen:
+                        seen.add((x, y))
+                        queue.appendleft((x, y, d + 1))
+            return -1
+        
+        for i in range(len(trees)):
+            next_i, next_j = trees[i][1:]
+            d = dist(curr_i, curr_j, next_i, next_j)
+            if d == -1:
+                return -1
+            cnt += d
+            curr_i, curr_j = next_i, next_j
+        return cnt
 ```
-def bfs(forest, sr, sc, tr, tc):
-    R, C = len(forest), len(forest[0])
-    queue = collections.deque([(sr, sc, 0)])
-    seen = {(sr, sc)}
-    while queue:
-        r, c, d = queue.popleft()
-        if r == tr and c == tc:
-            return d
-        for nr, nc in ((r-1, c), (r+1, c), (r, c-1), (r, c+1)):
-            if (0 <= nr < R and 0 <= nc < C and
-                    (nr, nc) not in seen and forest[nr][nc]):
-                seen.add((nr, nc))
-                queue.append((nr, nc, d+1))
-    return -1
-```
+sort the trees by height and than loop througth the trees, use bfs to get the distance between two trees.

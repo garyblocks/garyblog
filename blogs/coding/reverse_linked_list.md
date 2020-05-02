@@ -13,7 +13,7 @@ A linked list can be reversed either iteratively or recursively. Could you imple
 
 **Code:**
 
-```
+```python
 def reverseList(self, head):
     if not head or not head.next:
     	return head
@@ -22,4 +22,4 @@ def reverseList(self, head):
     head.next = null
     return p
 ```
-
+Recursively reverse the head.next list, when it's reversed, head.next.next becomes the tail

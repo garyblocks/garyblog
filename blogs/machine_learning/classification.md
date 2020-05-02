@@ -63,4 +63,27 @@
 	* These models have low bias and high variance. 
 	* It happens when we train our model a lot over noisy dataset.
 
-	
+## Algorithm
+#### logistic regression
+It is a regression algorithm to predict the probability of a categorical variable using a logit function on to top of the regular regression.
+
+**assumptions**
+
+* The dependent class is binary.
+* The variables should be independent and are linearly related to the log odds.
+
+## Data Exploration
+#### check dependent variable
+**continuous**
+First we want to check the counts of each class:
+
+```python
+df['class'].value_counts()
+
+sns.countplot(x='y', data=df, palette='hls')
+plt.show()
+
+count_class_a = df[df['y'] == 'a'].shape[0]
+pct_of_class_a = count_class_a / df.shape[0]
+print(pct_of_class_a)
+```

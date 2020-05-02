@@ -26,7 +26,7 @@ Output: ["let1 art can","let3 art zero","let2 own kit dig","dig1 8 1 5 1","dig2 
 
 **Code:**
 
-```
+```python
 class Solution(object):
     def reorderLogFiles(self, logs):
         def f(log):
@@ -35,4 +35,4 @@ class Solution(object):
 
         return sorted(logs, key = f)
 ```
-
+Build a custom sort function to sort the logs. Split with second argument 1 to only split the identifier out. Then check if the first char is alphabet or numeric, if it's numeric, set the first key to 1 so it comes later and keep the original order. Otherwise, sort by content then id.

@@ -26,4 +26,12 @@ class Solution:
                 s = 0
         return max_sum
 ```
-We keep checking the current sum, if become negative, set it to zero, and we also keep track of the max. The reasoning behind this is, if you have left_sum, right_sum, as long as the left_sum is positive, it's always good to include them. Also, since every step, left is positive, so there's no break you can make there.
+We keep checking the current sum, if it becomes negative, set it to zero, and we also keep track of the max. 
+
+array:  l l l l | r r r r
+The reasoning behind this is, if you have left sum and right sum, as long as the left sum is positive, it's always better to include them.
+But inside the left subarray, is it possible to get a bigger sum? The only way to get an unchecked bigger sum is the s part:
+
+array: l l s s | r r r r
+
+if ss is bigger than llss, then ll would be negative, they will be dropped. 

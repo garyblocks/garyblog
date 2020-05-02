@@ -14,7 +14,7 @@ return 2.
 
 **Code:**
 
-```
+```python
 class Solution:
     def firstUniqChar(self, s: str) -> int:
         """
@@ -30,3 +30,4 @@ class Solution:
                 return idx     
         return -1
 ```
+Use a hashmap to record if a character is unique, than loop through the string again to check.

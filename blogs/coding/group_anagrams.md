@@ -19,7 +19,19 @@ Output:
 ```
 **Code:**
 
+```python
+from collections import defaultdict
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        groups = defaultdict(list)
+        for wd in strs:
+            swd = ''.join(sorted(wd))
+            groups[swd].append(wd)
+        return groups.values()
 ```
+sort each word and use that as key to group the words into a hashtable. 
+
+```python
 class Solution:
     def groupAnagrams(strs):
         ans = collections.defaultdict(list)
@@ -30,4 +42,5 @@ class Solution:
             ans[tuple(count)].append(s)
         return ans.values()
 ```
+group by character count, the key here is to count all 26 letters so we don't have to sort.
 
