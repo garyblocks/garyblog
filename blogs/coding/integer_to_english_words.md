@@ -66,5 +66,6 @@ class Solution:
         ret += nums
         return ' '.join(ret)
 ```
-Divide by digit count and conquer. Be careful with 0.
+#### Idea
+Divide and conquer by 3-digits.
 

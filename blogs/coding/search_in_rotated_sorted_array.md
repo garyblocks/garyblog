@@ -28,21 +28,29 @@ class Solution:
     def search(self, nums: List[int], target: int) -> int:
         if not nums:
             return -1
-        l, h = 0, len(nums) - 1
-        while l <= h:
+            
+        l, h = 0, len(nums)-1
+        while l + 1 < h:
             m = (l + h) // 2
-            if nums[m] == target:
+            mid = nums[m]
+            if mid == target:
                 return m
-            elif nums[m] >= nums[l]:
-                if nums[l] <= target <= nums[m]:
-                    h = m - 1
+            elif mid > target:
+                if target < nums[0] and mid >= nums[0]:
+                    l = m
                 else:
-                    l = m + 1
+                    h = m
             else:
-                if nums[m] <= target <= nums[h]:
-                    l = m + 1
+                if target >=  nums[0] and mid < nums[0]:
+                    h = m
                 else:
-                    h = m - 1
-        return -1
+                    l = m
+                    
+        if nums[l] == target:
+            return l
+        elif nums[h] == target:
+            return h
+        else:
+            return -1
 ```
-Modify the binary search to check if the mid point is before the pivot or after pivot.
+Use the binary search template, there's only one condition that the binary search need to do different thing, that is when target and mid point are in different parts.

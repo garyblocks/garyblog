@@ -28,11 +28,15 @@ class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         l1, l2 = len(nums1), len(nums2)  
         if l1 > l2:
-            # here we want to make sure nums is shorter
+            # here we want to make sure nums1 is shorter
             # as we are calculating index on nums2 by substracting index on nums1
             # otherwise, the index could be negative
             return self.findMedianSortedArrays(nums2, nums1)
-        imin, imax, mid = 0, l1, (l1 + l2 + 1) // 2
+        # make sure left got one more element
+        mid = (l1 + l2 + 1) // 2
+        # search i in range 0: l1
+        imin, imax = 0, l1
+        # we want to cover i=l1 as edge cases
         while imin <= imax:
             i = (imin + imax) // 2
             j = mid - i

@@ -29,4 +29,4 @@ class Solution:
                     h -= 1
         return target + delta
 ```
-The idea is the same as 3Sum, sort the array first, then fix one number and search for the other two. Keep a delta to record the minimal difference from the target.
+The idea is the same as 3Sum, sort the array first, then fix one number and search for the other two. Keep a delta to record the minimal difference from the target. Do a check every time to cover all differences.

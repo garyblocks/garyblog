@@ -31,27 +31,23 @@ Output: true
 ```
 **Code:**
 
-```
-class Solution(object):
-    def isValid(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
         stack = []
-        mapping = {")": "(", "}": "{", "]": "["}
-
-        # For every bracket in the expression.
-        for char in s:
-            # If the character is an closing bracket
-            if char in mapping:
-                top_element = stack.pop() if stack else '#'
-                if mapping[char] != top_element:
+        pmap = {'(': ')', '[': ']', '{': '}'}
+        for p in s:
+            if p in pmap:
+                stack.append(p)
+            elif stack:
+                sp = stack.pop()
+                if p != pmap[sp]:
                     return False
             else:
-                # We have an opening bracket, simply push it onto the stack.
-                stack.append(char)
-        # The stack won't be empty for cases like ((()
-        return not stack
+                return False
+        if stack:
+            return False
+        return True
 ```
-
+#### Idea
+Use a stack to keep track the last open parenthese.

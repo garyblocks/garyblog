@@ -23,29 +23,29 @@ return its zigzag level order traversal as:
 **Code:**
 
 ```python
-from collections import deque
 class Solution:
     def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
+        layer = [root]
         ret = []
-        level, layer = 0, [root]
+        level = 1
         while layer:
-            next_layer = []
-            layer_values = deque([])
+            new_layer = []
+            values = []
             for node in layer:
                 if not node:
                     continue
+                values.append(node.val)
                 if level % 2:
-                    layer_values.appendleft(node.val)
+                    new_layer.extend([node.left, node.right])
                 else:
-                    layer_values.append(node.val)
-                next_layer.extend([node.left, node.right])
-            if layer_values:
-                ret.append(layer_values)
-            layer = next_layer
+                    new_layer.extend([node.right, node.left])
+            if values:
+                ret.append(values)
+            layer = list(reversed(new_layer))
             level += 1
         return ret
 ```
-BFS solution is going through it layer by layer, append from different direction for each layers.
+BFS solution is going through it layer by layer, append from different direction for each layers. Always reverse the order at the end, be careful for the left and right leaves.
 
 ```python
 from collections import deque

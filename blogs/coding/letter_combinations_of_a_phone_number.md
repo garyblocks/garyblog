@@ -32,6 +32,7 @@ class Solution:
         ret = []
         def dfs(path, digits):
             if not digits:
+            		# end condition is not more digits
                 return ret.append(path)
             for d in map_[digits[0]]:
                 dfs(path + d, digits[1:])

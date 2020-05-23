@@ -25,14 +25,12 @@ Explanation: In this case, no transaction is done, i.e. max profit = 0.
 ```python
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        ret = 0
-        if not prices:
-            return ret
-        low = prices[0]
+        low, max_p = float('inf'), 0
         for p in prices:
-            ret = max(p-low, ret)
-            if p < low:
-                low = p
-        return ret
+            max_p = max(max_p, p - low)
+            low = min(low, p)
+        return max_p
 ```
+Idea: You want to find the biggest difference.
+
 Keep updating two variables, the lowest value so far and the biggest difference between current price and the lowest value.

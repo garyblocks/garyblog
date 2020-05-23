@@ -34,3 +34,16 @@ class Solution:
             self.dfs(path + '(', left+1, right-1)
 ```
 Using dfs, to keep track the result and also two variables, one for open parentheses and for parantheses to open
+
+```python
+class Solution(object):
+    def generateParenthesis(self, N):
+        if N == 0: return ['']
+        ans = []
+        for c in xrange(N):
+            for left in self.generateParenthesis(c):
+                for right in self.generateParenthesis(N-1-c):
+                    ans.append('({}){}'.format(left, right))
+        return ans
+```
+use closure number to recursively generate the parenthesis.

@@ -34,24 +34,24 @@ Explanation: Given linked list is empty (null pointer), so return null.
 * Number of Nodes will not exceed 1000.
 **Code:**
 
+```python
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        if not head:
+            return head
+        node_map = {}
+        tmp = head
+        while head:
+            node_map[head] = Node(head.val)
+            head = head.next
+        new_head = node_map[tmp]
+        
+        while tmp:
+            if tmp.next:
+                node_map[tmp].next = node_map[tmp.next]
+            if tmp.random:
+                node_map[tmp].random = node_map[tmp.random]
+            tmp = tmp.next
+        return new_head
 ```
-class Solution(object):
-    def __init__(self):
-        # Dictionary which holds old nodes as keys and new nodes as its values.
-        self.visitedHash = {}
-
-    def copyRandomList(self, head):
-        if head == None:
-            return None
-        if head in self.visitedHash:
-            return self.visitedHash[head]
-        # create a new node
-        # with the value same as old node.
-        node = Node(head.val, None, None)
-        self.visitedHash[head] = node
-        # Recursively copy the remaining linked list from the pointers.
-        node.next = self.copyRandomList(head.next)
-        node.random = self.copyRandomList(head.random)
-        return node
-```
-
+Run through the linked list twice, the first time create all new nodes and keep the mapping in a dictionary, the second time link the next and random.

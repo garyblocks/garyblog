@@ -41,14 +41,16 @@ rotate the input matrix in-place such that it becomes:
 ```
 **Code:**
 
-```
+```python
 class Solution:
-    def rotate(self, A):
-        n = len(A)
-        for i in range(n):
+    def rotate(self, matrix: List[List[int]]) -> None:
+        N = len(matrix)
+        # upside down
+        for i in range(N // 2):
+            matrix[i], matrix[N-1-i] = matrix[N-1-i], matrix[i]
+        # transpose
+        for i in range(N):
             for j in range(i):
-                A[i][j], A[j][i] = A[j][i], A[i][j]
-        for row in A:
-            for j in range(n/2):
-                row[j], row[~j] = row[~j], row[j]
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 ```
+flip the image upside down and then transpose.

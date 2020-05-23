@@ -30,20 +30,18 @@ and that "hit" isn't the answer even though it occurs more because it is banned.
 
 **Code:**
 
+```python
+import re
+from collections import Counter
+class Solution:
+    def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
+        p = re.split('[^a-z]+', paragraph.lower())
+        p = filter(len, p)
+        cnt = Counter(p)
+        banned = set(banned)
+        items = sorted(cnt.items(), key=lambda x: x[1], reverse=True)
+        for k, v in items:
+            if k not in banned:
+                return k
 ```
-class Solution(object):
-    def mostCommonWord(self, paragraph, banned):
-        banset = set(banned)
-        for c in "!?',;.":
-            paragraph = paragraph.replace(c, " ")
-        count = collections.Counter(
-            word for word in paragraph.lower().split())
-
-        ans, best = '', 0
-        for word in count:
-            if count[word] > best and word not in banset:
-                ans, best = word, count[word]
-
-        return ans
-```
-
+clean the string, count and sort.

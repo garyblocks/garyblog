@@ -19,17 +19,19 @@ Return *3*, which is the length of the path `[4,2,1,3]` or `[5,2,1,3]`.
 
 **Code:**
 
+```python
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        def helper(node):
+            if not node:
+                return 0, 0
+            l_max, l_height = helper(node.left)
+            r_max, r_height = helper(node.right)
+            max_d = max(l_max, r_max, l_height + 1 + r_height)
+            height = max(l_height, r_height) + 1
+            return max_d, height
+        
+        md, h = helper(root)
+        return max(0, md-1)
 ```
-class Solution(object):
-    def diameterOfBinaryTree(self, root):
-        self.ans = 1
-        def depth(node):
-            if not node: return 0
-            L = depth(node.left)
-            R = depth(node.right)
-            self.ans = max(self.ans, L+R+1)
-            return max(L, R) + 1
-
-        depth(root)
-        return self.ans - 1
-```
+divide and conquer, use two variales to keep the states, height and max length.

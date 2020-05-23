@@ -18,27 +18,23 @@ Output: "bb"
 ```python
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        max_, ret = 0, ''
-        for i in range(len(s)):
-            l, d = 1, 0
-            while i - d >= 0 and i + d < len(s):
-                if s[i-d] == s[i+d]:
-                    l = 1 + d * 2
-                    if l > max_:
-                        max_, ret = l, s[i-d: i+d+1]
+        self.max_length, self.ret = 0, ""
+        
+        def expand(left, right):
+            while left > 0 and right < len(s) - 1:
+                if s[left-1] == s[right+1]:
+                    left -= 1
+                    right += 1
                 else:
                     break
-                d += 1
-            if i > 0 and s[i] == s[i-1]:
-                l, d = 2, 0
-                while i - 1 - d >= 0 and i + d < len(s):
-                    if s[i-1-d] == s[i+d]:
-                        l = 2 + d * 2
-                        if l > max_:
-                            max_, ret = l, s[i-1-d: i+d+1]
-                    else:
-                        break
-                    d += 1
-        return ret
+            if right - left + 1 > self.max_length:
+                self.max_length = right - left + 1
+                self.ret = s[left: right+1]
+        
+        for i in range(len(s)):
+            expand(i, i)
+            if i + 1 < len(s) and s[i] == s[i+1]:
+                expand(i, i+1)
+        return self.ret
 ```
-Loop through all the numbers and try to expand, check both single center and double centers.
+Loop through all the numbers and try to expand from the center, check both the single number center and the double numbers center.

@@ -30,20 +30,21 @@ to the starting pixel.
 
 **Code:**
 
-```
-class Solution(object):
-    def floodFill(self, image, sr, sc, newColor):
-        R, C = len(image), len(image[0])
-        color = image[sr][sc]
-        if color == newColor: return image
-        def dfs(r, c):
-            if image[r][c] == color:
-                image[r][c] = newColor
-                if r >= 1: dfs(r-1, c)
-                if r+1 < R: dfs(r+1, c)
-                if c >= 1: dfs(r, c-1)
-                if c+1 < C: dfs(r, c+1)
-
-        dfs(sr, sc)
+```python
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, newColor: int) -> List[List[int]]:
+        m, n = len(image), len(image[0])
+        oldColor = image[sr][sc]
+        if oldColor == newColor:
+            return image
+        
+        def dfs(r, c, cs, ct):
+            if 0 <= r < m and 0 <= c < n and image[r][c] == cs:
+                image[r][c] = ct
+                for dx, dy in [[0, 1], [1, 0], [-1, 0], [0, -1]]:
+                    dfs(r+dx, c+dy, cs, ct)
+        
+        dfs(sr, sc, oldColor, newColor)
         return image
 ```
+Use a dfs to enumerately update the cells.

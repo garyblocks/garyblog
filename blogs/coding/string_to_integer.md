@@ -48,7 +48,7 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
 ```python
 class Solution:
     def myAtoi(self, str: str) -> int:
-        MAX_INT = 2147483647
+        threshold = 2**31 // 10
         # remove white space
         str = str.strip()  # need to keep the space in the middle
         if len(str) == 0: return 0
@@ -62,21 +62,21 @@ class Solution:
             i += 1
             
         # get the numerical part
-        n = 0
+        ret = 0
         while i < len(str):
-            if str[i].isdigit():
-                n = n * 10 + ord(str[i]) - 48
-            else:
-                break  # handle trailing characters
+            if not str[i].isdigit():
+            	   # handle trailing characters
+                break
+            n = ord(str[i]) - ord('0')
+            # need to handle the overflow one step in advance
+            if sign < 0 and (ret > threshold or ret == threshold and n > 8):
+                return -2**31
+            elif sign > 0 and (ret > threshold or ret == threshold and n > 7):
+                return 2**31 - 1
+            ret = ret * 10 + n
             i += 1
         
-        # check max int
-        if sign < 0 and n >= MAX_INT + 1:
-            return - MAX_INT - 1
-        elif n > MAX_INT:
-            return MAX_INT
-        
-        return sign * n
+        return sign * ret
 ```
 Just go through the string character by character, but a lot of corner cases need to mind. When you split the logic into units, it's easier to manage.
 

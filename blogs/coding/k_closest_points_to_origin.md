@@ -31,46 +31,36 @@ Output: [[3,3],[-2,4]]
 **Code:**
 
 ```python
-import random
+from random import randint
 class Solution:
     def kClosest(self, points: List[List[int]], K: int) -> List[List[int]]:
-        dist = lambda i: points[i][0]**2 + points[i][1]**2
+        def dist(p):
+            return p[0]*p[0] + p[1]*p[1]
         
-        def sort(i, j, K):
-            if i >= j:
-                return 
-            # put random element at first
-            k = random.randint(i, j)
-            points[i], points[k] = points[k], points[i]
-            # find the mid point of i, j
-            mid = partition(i, j)
-            # if exact K elements on the left, no need to sort anymore 
-            if K < mid - i + 1:
-                # have k element on the left i to mid
-                sort(i, mid - 1, K)
-            elif K > mid - i + 1:
-                # on right still have K - left to solve
-                sort(mid + 1, j, K-(mid-i+1))
-                
-        def partition(i, j):
-            start = i
-            pivot = dist(i)
-            i += 1
-
-            while True:
-                while i < j and dist(i) < pivot:
-                    i += 1
-                while i <= j and dist(j) >= pivot:
-                    # make sure they meet if there are duplicates
-                    j -= 1
-                if i >= j: break
-                points[i], points[j] = points[j], points[i]
-            
-            # put pivot element back to middle
-            points[start], points[j] = points[j], points[start]
-            return j
-
-        sort(0, len(points) - 1, K)
+        def partition(l, h):
+            r = randint(l, h)
+            pivot = dist(points[r])
+            points[h], points[r] = points[r], points[h]
+            j = l-1
+            for i in range(l, h):
+                if dist(points[i]) < pivot:
+                    j += 1
+                    points[j], points[i] = points[i], points[j]
+            points[j+1], points[h] = points[h], points[j+1]
+            return j + 1
+        
+        if K == 0 or len(points) < K:
+            return []
+        
+        l, h = 0, len(points) - 1
+        while l < h:
+            p = partition(l, h)
+            if p == K - 1:
+                break
+            elif p > K - 1:
+                h = p-1
+            else:
+                l = p+1
         return points[:K]
 ```
 We take advantage of return K not in order, use quick sort to partial sort the array. Recursively find a random point, make sure the elements on its left are smaller than the ones on its right, until we find the first K elements. Return them. We only do at most N switches, so it's O(N) time complexity.

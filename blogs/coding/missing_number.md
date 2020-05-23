@@ -16,9 +16,9 @@ Your algorithm should run in linear runtime complexity. Could you implement it u
 
 **Code:**
 
-```
+```python
 def missingNumber(self, nums):
     n = len(nums)
     return (n*(n+1)/2) - sum(nums)
 ```
-
+Use the math formula to calculate the expected sum and then subtract all the numbers, the left one will be the missing one.

@@ -18,37 +18,29 @@ For k = 3, you should return: `3->2->1->4->5`
 
 **Code:**
 
-```
+```python
 class Solution:
-    def reverseLinkedList(self, head, k):
-        new_head, ptr = None, head
-        while k:
-            next_node = ptr.next
-            # Insert the node pointed to by "ptr"
-            # at the beginning of the reversed list
-            ptr.next = new_head
-            new_head = ptr 
-            # Move on to the next node
-            ptr = next_node
-            # Decrement the count of nodes to be reversed by 1
-            k -= 1
-        # Return the head of the reversed list
-        return new_head
-                
-    
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
-        count = 0
-        ptr = head
-        while count < k and ptr:
-            ptr = ptr.next
-            count += 1    
-        # If we have k nodes, then we reverse them
-        if count == k: 
-            reversedHead = self.reverseLinkedList(head, k)
-            # we use that and the "original" head of the "k" nodes
-            # to re-wire the connections.
-            head.next = self.reverseKGroup(ptr, k)
-            return reversedHead
-        return head
+        dummy = ListNode(0, head)
+        
+        def rev(start, next_n):
+            if start.next == next_n:
+                return start
+            tmp = start.next
+            new_start = rev(tmp, next_n)
+            tmp.next = start
+            start.next = next_n
+            return new_start
+        
+        cur, cnt = head, 0
+        prev = dummy
+        while cur:
+            cur = cur.next
+            cnt += 1
+            if cnt % k == 0:
+                new_prev = prev.next
+                prev.next = rev(new_prev, cur)
+                prev = new_prev
+        return dummy.next
 ```
-
+have two pointers, one as the node before k start, other one is after k ends, when we have k nodes, reverse these nodes.

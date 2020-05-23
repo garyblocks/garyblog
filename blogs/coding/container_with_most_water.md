@@ -15,19 +15,28 @@ Output: 49
 ```python
 class Solution:
     def maxArea(self, height: List[int]) -> int:
-        i, j = 0, len(height) - 1
-        max_area = min(height[i], height[j]) * (j - i)
-        while j > i:
-            if height[i] > height[j]:
-                j -= 1
+        N = len(height)
+        if N < 1:
+            return 0
+        l, r = 0, N - 1
+        max_area = 0
+        while l <= r:
+            area = (r - l) * min(height[l], height[r])
+            max_area = max(area, max_area)
+            if height[l] < height[r]:
+                l += 1
             else:
-                i += 1
-            new_area = min(height[i], height[j]) * (j - i)
-            max_area = max(max_area, new_area)
+                r -= 1
         return max_area
 ```
-Use two pointers moving to different directions, while keep moving the pointer with the shorter height, and this will cover all the situations, and the time complexity is O(n)
+#### Idea:
+Use **two pointers** moving towards each other, always move the pointer with the shorter height.
 
-To understand this, the area is width times the min height, we start with the largest width, so the only way the area is going to be higher is to have a higher min height, and that can only be achieved by lower the pointer to the shorter height. And this is true for each step.
+#### Explanation:
+To understand this, the area is calculated as the product of width and min height of two bars, we start with the largest width, so the only way to increase the  area is to have a higher min bar height, and that can only be achieved by move the pointer on the shorter bar to find a higher one. And this is true for each step.
 
 Are we going to miss anything? No, because the areas we didn't check are those infront of the taller bar. Since the shorter bar defines the min height, the only chance to be better is a larger width, but they will never have a width wider than the current taller bar as they are in front of it. So we won't miss a bigger area.
+
+#### Complexity:
+* Space: \\( O(1) \\)
+* Time: \\( O(N) \\)

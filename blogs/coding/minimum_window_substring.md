@@ -14,29 +14,33 @@ Output: "BANC"
 ```
 **Code:**
 
+```python
+from collections import Counter
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        j = 0
+        d = Counter(t)
+        required = len(d.keys())
+        formed = 0
+        min_length = len(s) + 1
+        ret = ''
+        for i, c in enumerate(s):
+            if c not in d:
+                continue
+            d[c] -= 1
+            if d[c] == 0:
+                formed += 1 
+                
+            while j <= i and formed == required:
+                if i - j + 1 < min_length:
+                    min_length = i - j + 1
+                    ret = s[j: i+1]
+                if s[j] in d:
+                    d[s[j]] += 1
+                    if d[s[j]] > 0:
+                        formed -= 1
+                j += 1 
+                
+        return ret
 ```
-import collections
-class Solution(object):
-    def minWindow(self, s, t):
-        if len(s) < len(t):
-            return ""
-        
-        hashmap = collections.Counter(t)
-        counter = len(t)
-        min_window = ""
-        start, end = 0, 0
-        
-        for end in range(len(s)):
-            if hashmap[s[end]] > 0:
-                counter -= 1
-            hashmap[s[end]] -= 1
-            while counter == 0:
-                length = end - start + 1
-                if not min_window or len(min_window) > length:
-                    min_window = s[start:end+1]
-                hashmap[s[start]] += 1
-                if hashmap[s[start]] > 0:
-                    counter += 1
-                start += 1
-        return min_window
-```
+Keep a dictionary to count the number of characters, when condition is met, move the left pointer until it's not met anymore.

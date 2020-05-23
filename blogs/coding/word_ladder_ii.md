@@ -36,26 +36,28 @@ Explanation: The endWord "cog" is not in wordList, therefore no possible transfo
 
 **Code:**
 
-```
-class Solution(object):
-    def findLadders(self, beginWord, endWord, wordList):
-        wordList = set(wordList)
-        res = []
-        layer = {}
-        layer[beginWord] = [[beginWord]]
-        while layer:
-            newlayer = collections.defaultdict(list)
-            for w in layer:
-                if w == endWord: 
-                    res.extend(k for k in layer[w])
+```python
+from collections import defaultdict
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        front = {beginWord: [[beginWord]]}
+        ret = []
+        words = set(wordList)
+        while front:
+            new_front = defaultdict(list)
+            for w in front:
+                if w == endWord:
+                    ret.extend(front[w])
                 else:
                     for i in range(len(w)):
                         for c in 'abcdefghijklmnopqrstuvwxyz':
-                            neww = w[:i]+c+w[i+1:]
-                            if neww in wordList:
-                                newlayer[neww]+=[j+[neww] for j in layer[w]]
-            wordList -= set(newlayer.keys())
-            layer = newlayer
-        return res
+                            nw = w[:i] + c + w[i+1:]
+                            if nw in words:
+                                new_front[nw] += [p + [nw] for p in front[w]]
+            words -= set(new_front.keys())
+            if ret:
+                break
+            front = new_front
+        return ret
 ```
-
+Layer by layer BFS, use a dictionary to hold the last word.

@@ -49,29 +49,23 @@ Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 **Code:**
 
 ```python
-values = {
-    "I": 1,
-    "V": 5,
-    "X": 10,
-    "L": 50,
-    "C": 100,
-    "D": 500,
-    "M": 1000,
-}
-
+from collections import OrderedDict
 class Solution:
     def romanToInt(self, s: str) -> int:
-        total = 0
-        i = 0
-        while i < len(s):
-            # If this is the subtractive case.
-            if i + 1 < len(s) and values[s[i]] < values[s[i + 1]]:
-                total += values[s[i + 1]] - values[s[i]]
-                i += 2
-            # Else this is NOT the subtractive case.
-            else:
-                total += values[s[i]]
-                i += 1
-        return total
+        m = OrderedDict([
+            ('M', 1000), ('CM', 900), ('D', 500), ('CD', 400), ('C', 100),
+            ('XC', 90), ('L', 50), ('XL', 40), ('X', 10), ('IX', 9),
+            ('V', 5), ('IV', 4), ('III', 3), ('II', 2), ('I', 1)
+        ])
+        ret = 0
+        for key in m:
+            while s.startswith(key):
+                s = s[len(key):]
+                ret += m[key]
+        return ret
 ```
-Loop throught the string from left to right, if it's next letter is bigger than the current letter, do a subtraction, otherwise, add the current letter.
+#### Idea
+Loop the values from bigger to smaller.
+
+#### Detail
+Use OrderedDict to loop the values from bigger to smaller, which is from left to right in the string. when a character appear twice or three times, use a while loop to check those them more than one times.

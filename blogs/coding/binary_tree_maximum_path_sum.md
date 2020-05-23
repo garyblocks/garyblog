@@ -27,34 +27,22 @@ Output: 42
 ```
 **Code:**
 
-```
+```python
 class Solution:
-    def maxPathSum(self, root):
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
-        def max_gain(node):
-            nonlocal max_sum
-            if not node:
-                return 0
-
-            # max sum on the left and right sub-trees of node
-            left_gain = max(max_gain(node.left), 0)
-            right_gain = max(max_gain(node.right), 0)
-            
-            # the price to start a new path where `node` is a highest node
-            price_newpath = node.val + left_gain + right_gain
-            
-            # update max_sum if it's better to start a new path
-            max_sum = max(max_sum, price_newpath)
+    def maxPathSum(self, root: TreeNode) -> int:
+        self.max_sum = float('-inf')
+        def get_sum(node):
+            max_left = get_sum(node.left) + node.val if node.left else node.val
+            max_right = get_sum(node.right) + node.val if node.right else node.val
+            self.max_sum = max(
+                self.max_sum, node.val,
+                max_left, max_right,
+                max_left + max_right - node.val
+            )
+            return max(max_left, node.val, max_right)
         
-            # for recursion :
-            # return the max gain if continue the same path
-            return node.val + max(left_gain, right_gain)
-   
-        max_sum = float('-inf')
-        max_gain(root)
-        return max_sum
+        get_sum(root)
+        return self.max_sum
 ```
+Keep checking left, right, start from mid or left + mid + right.
 
